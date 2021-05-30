@@ -1,28 +1,30 @@
-let webpack = require('webpack');
 let HtmlPlugin = require('html-webpack-plugin');
 let CleanWebpackPlugin = require('clean-webpack-plugin');
-let ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 let rules = require('./webpack.config.rules')();
 let path = require('path');
+const regeneratorRuntime = require("regenerator-runtime/runtime");
 
 rules.push({
-    test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader'
-    })
+        test: /\.css$/i,
+        use: [
+            {
+              loader: MiniCssExtractPlugin.loader,
+            },
+            'css-loader',
+          ]
 });
 
 module.exports = {
     entry: {
-        index: './src/index.js',
+        index: './src/js/index.js',
     },
     devServer: {
-        index: 'index.html'
+        index: './index.html'
     },
     output: {
-        filename: '[name].[hash].js',
+        filename: 'js/[name].[fullhash].js',
         path: path.resolve('dist')
     },
     devtool: 'source-map',
@@ -43,18 +45,14 @@ module.exports = {
         ]
     },
     plugins: [
-        // new webpack.optimize.UglifyJsPlugin({
-        //     sourceMap: true,
-        //     compress: {
-        //         drop_debugger: false,
-        //         warnings: false
-        //     }
-        // }),
-        new ExtractTextPlugin('styles.css'),
-        new HtmlPlugin({
-            title: 'GeoFeedback',
-            template: 'index.hbs'
-        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // all options are optional
+            filename: 'css/[name].css',
+            chunkFilename: '[id].css',
+            ignoreOrder: false, // Enable to remove warnings about conflicting order
+          }),
+        new HtmlPlugin({ template: './index.html' }),
         new CleanWebpackPlugin(['dist'])
     ]
 };
