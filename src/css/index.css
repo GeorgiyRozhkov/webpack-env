@@ -29,10 +29,9 @@ html, body, #map {
     color: red;
 }
 
-.form .review-list {
+.review-list {
     font-size: 16px;
     max-height: 500px;
-    
 }
 .review-form{
     overflow: hidden;

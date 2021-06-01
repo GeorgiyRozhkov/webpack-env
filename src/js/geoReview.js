@@ -11,11 +11,7 @@ export default class GeoReview {
 
   async onInit() {
     const coords = await Object.values(JSON.parse(storage.getItem('review')) || {});
-    console.log(coords);
     for (const item of coords) {
-        console.log(this);
-        console.log(coords);
-        console.log(this.coords);
         this.map.createPlacemark(item.coords);
     }
     function onDocumentClick(e) {
@@ -24,23 +20,22 @@ export default class GeoReview {
         const placeInput = document.querySelector('[data-role=review-place]'); 
         const textInput = document.querySelector('[data-role=review-text]'); 
         const formError = document.querySelector('.form-error');
+        
 
-        if (nameInput.value != '' && placeInput.value !='' && textInput.value != ''){
-          debugger
+        if (nameInput.value != '' && placeInput.value != '' && textInput.value != ''){
           const reviewForm = document.querySelector('[data-role=review-form]');
-          coords.push(JSON.parse(reviewForm.dataset.coords));
-          let reviewData = JSON.parse(storage.getItem('review') || '[]');
+          const reviewData = JSON.parse(storage.getItem('review') || '[]');
+          let currentCoords = JSON.parse(reviewForm.dataset.coords);
+          
           reviewData.push({
             name: document.querySelector('[data-role=review-name]').value,
             place: document.querySelector('[data-role=review-place]').value,
             text: document.querySelector('[data-role=review-text]').value,
-            coords: reviewForm.dataset.coords,
+            coords: currentCoords,
           });
-            // storage.setItem('coords', JSON.stringify(coords));
-            storage.setItem('review',  JSON.stringify(reviewData));
-            console.log(coords);
-            this.map.createPlacemark(reviewForm.dataset.coords);
-            this.map.closeBalloon();
+           storage.setItem('review',  JSON.stringify(reviewData));
+           this.map.createPlacemark(currentCoords);
+           this.map.closeBalloon();
         }else{
           formError.innerText = 'Заполните каждое поле';
         }
@@ -50,7 +45,6 @@ export default class GeoReview {
   }
 
   createForm(coords, reviews) {
-    debugger
     const root = document.createElement('div');
     root.innerHTML = this.formTemplate;
     const reviewList = root.querySelector('.review-list');
@@ -59,18 +53,19 @@ export default class GeoReview {
     const reviewForm = root.querySelector('[data-role=review-form]');
     reviewForm.dataset.coords = JSON.stringify(coords);
 
-    for (const item of reviews) {
-      const div = document.createElement('div');
-      div.classList.add('review-item');
-      div.style.color = '#8F8F8F'
-      div.innerHTML = `
-    <div>
-      <b style = "color: black">${item.name}</b> ${item.place}
-    </div>
-    <div>${item.text}</div>
-    `;
-      reviewList.appendChild(div);
-    }
+      for (const item of reviews) {
+        const div = document.createElement('div');
+        div.classList.add('review-item');
+        div.style.color = '#8F8F8F'
+        div.innerHTML = `
+      <div>
+        <b style = "color: black">${item.name}</b> ${item.place}
+      </div>
+      <div>${item.text}</div>
+      `;
+        reviewList.appendChild(div);
+      }
+    
     
     return root;
   }
@@ -81,7 +76,5 @@ export default class GeoReview {
     const form = this.createForm(coords, list);
     this.map.setBalloonContent(form.innerHTML);
   }
-
-  
 }
 
