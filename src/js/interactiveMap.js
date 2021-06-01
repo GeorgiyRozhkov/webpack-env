@@ -37,8 +37,8 @@ export default class InteractiveMap {
       this.onClick(coords);
     });
     this.map = new ymaps.Map(this.mapId, {
-      center: [55.76, 37.64],
-      zoom: 10,
+      center: [59.94, 30.32],
+      zoom: 12,
     });
     this.map.events.add('click', (e) => this.onClick(e.get('coords')));
     this.map.geoObjects.add(this.clusterer);
@@ -57,10 +57,11 @@ export default class InteractiveMap {
   }
 
   createPlacemark(coords) {
+    debugger
     const placemark = new ymaps.Placemark(coords);
     placemark.events.add('click', (e) => {
-      const coords = e.get('target').geometry.getCoordinates();
-      this.onClick(coords);
+    const coords = e.get('target').geometry.getCoordinates();
+    this.onClick(coords);
     });
     this.clusterer.add(placemark);
   }

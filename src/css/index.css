@@ -7,6 +7,7 @@ html, body, #map {
 
 .form {
     width: 300px;
+    overflow: hidden;
 }
 
 .form .field {
@@ -29,11 +30,24 @@ html, body, #map {
 }
 
 .form .review-list {
+    font-size: 16px;
     max-height: 500px;
-    overflow: scroll;
+    
 }
-
+.review-form{
+    overflow: hidden;
+}
 .btn{
     background: #FF8663;
     border-radius: 3px;
+    width: 100px;
+    height: 32px;
+    color: whitesmoke;
+    outline: none;
+}
+input::placeholder{
+    color: black;
+}
+textarea::placeholder{
+    color: black;
 }
