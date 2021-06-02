@@ -40,6 +40,7 @@ module.exports = {
               ecma: 6,
               mangle: true
             },
+            // При запуске dev установить значение true, для build - false
             sourceMap: false
           })
         ]
