@@ -54,17 +54,20 @@ export default class GeoReview {
     reviewForm.dataset.coords = JSON.stringify(coords);
 
       for (const item of reviews) {
-        const div = document.createElement('div');
-        div.classList.add('review-item');
-        div.style.color = '#8F8F8F'
-        div.innerHTML = `
-      <div>
-        <b style = "color: black">${item.name}</b> ${item.place}
-      </div>
-      <div>${item.text}</div>
-      `;
-        reviewList.appendChild(div);
+        if(JSON.stringify(item.coords) == JSON.stringify(coords)){
+          const div = document.createElement('div');
+          div.classList.add('review-item');
+          div.style.color = '#8F8F8F'
+          div.innerHTML = `
+          <div>
+            <b style = "color: black">${item.name}</b> ${item.place}
+          </div>
+          <div>${item.text}</div>
+          `;
+          reviewList.appendChild(div);
+        }
       }
+        
     
     
     return root;
